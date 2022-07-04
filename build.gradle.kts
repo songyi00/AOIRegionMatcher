@@ -35,6 +35,8 @@ repositories {
 
 }
 
+val kotestVersion = "4.2.6"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -56,6 +58,14 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial
 	implementation("org.hibernate:hibernate-spatial:5.1.0.Final")
+
+	// kotest
+	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+
+	// mockK
+	testImplementation("io.mockk:mockk:1.12.4")
+
 }
 
 tasks.withType<KotlinCompile> {

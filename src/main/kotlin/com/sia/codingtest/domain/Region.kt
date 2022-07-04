@@ -1,6 +1,6 @@
 package com.sia.codingtest.domain
 
-import com.sia.codingtest.dto.CreateRegionInfoDto
+import com.sia.codingtest.dto.CreateRegionDto
 import com.vividsolutions.jts.geom.Point
 import javax.persistence.*
 
@@ -25,12 +25,8 @@ class Region(name:String, area:Point) {
             Region::name,
             Region::area
         )
-        fun createRegionInfo(createRegionInfoDto: CreateRegionInfoDto) : Region {
-            val region = Region(createRegionInfoDto.name, createRegionInfoDto.area).apply {
-                this.name = name
-                this.area = area
-            }
-            return region
+        fun createRegionInfo(createRegionDto: CreateRegionDto) : Region {
+            return Region(createRegionDto.name, createRegionDto.area)
         }
     }
 }

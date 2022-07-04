@@ -1,7 +1,7 @@
 package com.sia.codingtest.domain
 
 
-import com.sia.codingtest.dto.CreateRegionInfoDto
+import com.sia.codingtest.dto.CreateAoiDto
 import com.vividsolutions.jts.geom.Point;
 import javax.persistence.*
 
@@ -25,5 +25,8 @@ class AOI(name: String, area: Point){
             AOI::name,
             AOI::area
         )
+        fun createRegionInfo(createAoiDto: CreateAoiDto): AOI {
+            return AOI(createAoiDto.name, createAoiDto.area)
+        }
     }
 }
