@@ -1,6 +1,7 @@
 package com.sia.codingtest.domain
 
 
+import com.sia.codingtest.dto.CreateRegionInfoDto
 import com.vividsolutions.jts.geom.Point;
 import javax.persistence.*
 
@@ -14,7 +15,15 @@ class AOI(name: String, area: Point){
     @Column(columnDefinition="text")
     var name: String = name
 
-    @Column(columnDefinition = "geometry(Polygon,4326)", name="area")
+    @Column(columnDefinition = "geometry(Polygon,4326)")
     var area: Point = area
 
+    companion object{
+        private val equalsAndHashCodeProperties = arrayOf(AOI::id)
+        private val toStringProperties = arrayOf(
+            AOI::id,
+            AOI::name,
+            AOI::area
+        )
+    }
 }
