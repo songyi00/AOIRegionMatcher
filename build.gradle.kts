@@ -53,6 +53,9 @@ dependencies {
 	// postgresql
 	// https://mvnrepository.com/artifact/org.postgresql/postgresql
 	runtimeOnly("org.postgresql:postgresql")
+
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial
+	implementation("org.hibernate:hibernate-spatial:5.1.0.Final")
 }
 
 tasks.withType<KotlinCompile> {

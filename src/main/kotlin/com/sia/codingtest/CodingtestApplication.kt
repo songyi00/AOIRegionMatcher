@@ -8,4 +8,5 @@ class CodingtestApplication
 
 fun main(args: Array<String>) {
 	runApplication<CodingtestApplication>(*args)
+
 }
