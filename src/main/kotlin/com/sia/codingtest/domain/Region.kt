@@ -1,5 +1,6 @@
 package com.sia.codingtest.domain
 
+import com.sia.codingtest.dto.CreateRegionInfoDto
 import com.vividsolutions.jts.geom.Point
 import javax.persistence.*
 
@@ -16,4 +17,20 @@ class Region(name:String, area:Point) {
 
     @Column(columnDefinition = "geometry(Polygon,4326)",name="area")
     var area: Point = area
+
+    companion object{
+        private val equalsAndHashCodeProperties = arrayOf(Region::id)
+        private val toStringProperties = arrayOf(
+            Region::id,
+            Region::name,
+            Region::area
+        )
+        fun createRegionInfo(createRegionInfoDto: CreateRegionInfoDto) : Region {
+            val region = Region(createRegionInfoDto.name, createRegionInfoDto.area).apply {
+                this.name = name
+                this.area = area
+            }
+            return region
+        }
+    }
 }
