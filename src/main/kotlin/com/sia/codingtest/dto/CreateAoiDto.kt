@@ -1,6 +1,6 @@
 package com.sia.codingtest.dto
 
-import com.vividsolutions.jts.geom.Point
+import com.vividsolutions.jts.geom.Polygon
 
-data class CreateAoiDto(val name: String, val area: Point) {
+data class CreateAoiDto(val name: String, val area: Polygon) {
 }
