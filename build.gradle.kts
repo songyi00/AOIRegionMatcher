@@ -61,8 +61,6 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.postgresql/postgresql
 	runtimeOnly("org.postgresql:postgresql")
 
-	//h2
-	runtimeOnly ("com.h2database:h2")
 
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial
 	implementation("org.hibernate:hibernate-spatial:5.1.0.Final")

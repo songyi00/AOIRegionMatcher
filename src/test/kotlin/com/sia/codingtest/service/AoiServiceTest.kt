@@ -8,14 +8,15 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestPropertySource
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
 @SpringBootTest
 class AoiServiceTest(val aoiService: AoiService) : FunSpec({
 
     test("관심 지역 저장") {
         //given
         val geometry : Polygon = WKTReader().read("Polygon((127.02 37.742, 127.023 37.664, 126.945 37.605, 126.962 37.692, 127.02 37.742))") as Polygon
+        geometry.srid = 4326
 
         val createAoiDto = CreateAoiDto(
             "북한산", geometry
@@ -36,6 +37,7 @@ class AoiServiceTest(val aoiService: AoiService) : FunSpec({
         val regionId : Long = 1
         val aois : List<AOI>? = aoiService.findAoiInRegion(regionId)
 
-        println("결과: "+aois)
+
+        println("결과: "+aois.toString())
     }
 })

@@ -9,7 +9,7 @@ import javax.persistence.EntityManager
  interface AoiRepository : JpaRepository<AOI,Long> {
     fun findAOIById(id: Long): AOI?
 
-    @Query(value = "select a.*, r.* from AOI a , Region r where r.region_id = :regionId and st_intersects(a.area , r.area);",nativeQuery=true)
+    @Query(value = "select a.*, r.* from AOI a , Region r where r.region_id = :regionId and st_intersects(a.area , r.area)",nativeQuery=true)
     fun findAOISByRegion(@Param("regionId") regionId: Long): List<AOI>?
 
  }
