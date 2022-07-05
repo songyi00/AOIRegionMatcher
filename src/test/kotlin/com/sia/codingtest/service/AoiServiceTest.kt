@@ -32,4 +32,10 @@ class AoiServiceTest(val aoiService: AoiService) : FunSpec({
         aoiName shouldBe "북한산"
     }
 
+    test("행정 지역 포함 관심지역 조회") {
+        val regionId : Long = 1
+        val aois : List<AOI>? = aoiService.findAoiInRegion(regionId)
+
+        println("결과: "+aois)
+    }
 })

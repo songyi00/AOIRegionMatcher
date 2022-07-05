@@ -23,6 +23,4 @@ class RegionService(private val regionRepository: RegionRepository) {
         return  regionRepository.findRegionById(regionId)
     }
 
-    // 행정지역에 지리적으로 포함되는 관심 지역 조회
-
 }
