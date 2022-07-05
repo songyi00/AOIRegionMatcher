@@ -17,13 +17,10 @@ class RegionServiceTest(val regionService: RegionService) : FunSpec({
 
      test("행정 지역 정보 저장") {
           //given
-          val latitude = 37.51435 // 위도
-          val longitude = 127.12215 // 경도
-
           val geometry : Polygon = WKTReader().read("Polygon((126.835 37.688, 127.155 37.702, 127.184 37.474, 126.821 37.454, 126.835 37.688))") as Polygon
 
           val createRegionDto = CreateRegionDto(
-               "테스트", geometry
+               "서울시", geometry
           )
           println(createRegionDto.toString())
           println("geometry: "+ geometry.geometryType)
@@ -34,6 +31,7 @@ class RegionServiceTest(val regionService: RegionService) : FunSpec({
           val regionName = region?.name
 
           //then
-          regionName shouldBe "테스트"
+          regionName shouldBe "서울시"
      }
+
 })
