@@ -1,32 +1,39 @@
 package com.sia.codingtest.service
 
+import com.sia.codingtest.domain.Region
 import com.sia.codingtest.dto.CreateRegionDto
 import com.vividsolutions.jts.geom.Point
+import com.vividsolutions.jts.geom.Polygon
 import com.vividsolutions.jts.io.WKTReader
-import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import org.json.JSONObject
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.context.SpringBootTest
 
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
+@SpringBootTest
+class RegionServiceTest(val regionService: RegionService) : FunSpec({
 
-class RegionServiceTest(regionService: RegionService) : ShouldSpec({
+     test("행정 지역 정보 저장") {
+          //given
+          val latitude = 37.51435 // 위도
+          val longitude = 127.12215 // 경도
 
-//    test("행정 지역 정보 저장") {
-//        "Region".name shouldBe "서울시"
-//    }
-    should("행정 지역 정보 저장 ") {
-        //given
-        val latitude = 37.51435
-        val longitude = 127.12215
-        val pointWKT = String.format("POINT(%s %s)", longitude, latitude)
-        val point = WKTReader().read(pointWKT) as Point
+          val geometry : Polygon = WKTReader().read("Polygon((126.835 37.688, 127.155 37.702, 127.184 37.474, 126.821 37.454, 126.835 37.688))") as Polygon
 
-        val createRegionDto : CreateRegionDto = CreateRegionDto(
-            "서울시",point
-        )
+          val createRegionDto = CreateRegionDto(
+               "테스트", geometry
+          )
+          println(createRegionDto.toString())
+          println("geometry: "+ geometry.geometryType)
 
-        //when
-        val region_id: Long = regionService.saveRegion(createRegionDto)
+          //when
+          val regionId = regionService.saveRegion(createRegionDto)
+          val region : Region? = regionService.findOne(regionId)
+          val regionName = region?.name
 
-        //then
-        region_id shouldBe 4
-    }
+          //then
+          regionName shouldBe "테스트"
+     }
 })

@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RegionRepository : JpaRepository<Region,Long> {
+    fun findRegionById(id: Long): Region?
 
 }
