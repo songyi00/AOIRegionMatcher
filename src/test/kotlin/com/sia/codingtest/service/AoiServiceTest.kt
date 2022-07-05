@@ -2,27 +2,24 @@ package com.sia.codingtest.service
 
 import com.sia.codingtest.domain.AOI
 import com.sia.codingtest.dto.CreateAoiDto
+import com.sia.codingtest.dto.CreateRegionDto
 import com.vividsolutions.jts.geom.Polygon
 import com.vividsolutions.jts.io.WKTReader
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.TestPropertySource
 
 @SpringBootTest
-class AoiServiceTest(val aoiService: AoiService) : FunSpec({
+class AoiServiceTest(val aoiService: AoiService, val regionService: RegionService) : FunSpec({
 
     test("관심 지역 저장") {
         //given
-        val geometry : Polygon = WKTReader().read("Polygon((127.02 37.742, 127.023 37.664, 126.945 37.605, 126.962 37.692, 127.02 37.742))") as Polygon
-        geometry.srid = 4326
+        val aoiArea : Polygon = WKTReader().read("Polygon((127.02 37.742, 127.023 37.664, 126.945 37.605, 126.962 37.692, 127.02 37.742))") as Polygon
+        aoiArea.srid = 4326
 
         val createAoiDto = CreateAoiDto(
-            "북한산", geometry
+            "북한산", aoiArea
         )
-        println(createAoiDto.toString())
-        println("geometry: "+ geometry.geometryType)
 
         //when
         val aoiId = aoiService.saveAoi(createAoiDto)
@@ -34,10 +31,26 @@ class AoiServiceTest(val aoiService: AoiService) : FunSpec({
     }
 
     test("행정 지역 포함 관심지역 조회") {
-        val regionId : Long = 1
+        //given
+        val regionArea : Polygon = WKTReader().read("Polygon((126.835 37.688, 127.155 37.702, 127.184 37.474, 126.821 37.454, 126.835 37.688))") as Polygon
+        val createRegionDto = CreateRegionDto(
+            "서울시", regionArea
+        )
+
+        val aoiArea : Polygon = WKTReader().read("Polygon((127.02 37.742, 127.023 37.664, 126.945 37.605, 126.962 37.692, 127.02 37.742))") as Polygon
+        val createAoiDto = CreateAoiDto(
+            "북한산", aoiArea
+        )
+
+        // when
+        val regionId = regionService.saveRegion(createRegionDto)
+        val aoiId = aoiService.saveAoi(createAoiDto)
+
         val aois : List<AOI>? = aoiService.findAoiInRegion(regionId)
 
-
-        println("결과: "+aois.toString())
+        // then
+        if (aois != null) {
+          aois[0].name shouldBe "북한산"
+        }
     }
 })

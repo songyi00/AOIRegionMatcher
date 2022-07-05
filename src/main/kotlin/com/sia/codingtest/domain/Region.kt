@@ -16,7 +16,7 @@ class Region(name:String, area:Polygon) {
     @Column(columnDefinition="text")
     var name: String = name
 
-//    @Column(columnDefinition = "geometry(Polygon)")
+    @Column(columnDefinition = "geometry(Polygon)")
     var area: Polygon = area
 
     companion object{

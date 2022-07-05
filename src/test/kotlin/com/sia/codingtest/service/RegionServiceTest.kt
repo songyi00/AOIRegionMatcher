@@ -7,11 +7,8 @@ import com.vividsolutions.jts.geom.Polygon
 import com.vividsolutions.jts.io.WKTReader
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import org.json.JSONObject
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
 @SpringBootTest
 class RegionServiceTest(val regionService: RegionService) : FunSpec({
 
