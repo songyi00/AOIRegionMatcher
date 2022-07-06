@@ -5,6 +5,7 @@ import com.sia.codingtest.domain.Point
 import com.sia.codingtest.dto.response.AoiResponse
 import com.sia.codingtest.dto.response.AoisDto
 import com.sia.codingtest.dto.request.CreateAoiDto
+import com.sia.codingtest.dto.response.IdResponse
 
 import com.sia.codingtest.service.AoiService
 import org.springframework.http.HttpStatus
@@ -23,9 +24,9 @@ class AoiController(private val aoiService: AoiService) {
     // 관심 지역 등록
     @PostMapping("/aois")
     @ResponseStatus(HttpStatus.CREATED)
-    fun saveAoi(@RequestBody @Validated createAoiDto: CreateAoiDto) : ResponseEntity<Long> {
+    fun saveAoi(@RequestBody @Validated createAoiDto: CreateAoiDto) : ResponseEntity<IdResponse> {
         val id = aoiService.saveAoi(createAoiDto)
-        return ResponseEntity.ok().body(id)
+        return ResponseEntity.ok().body(IdResponse(id))
     }
 
     // 행정 지역에 포함되는 관심 지역 조회
