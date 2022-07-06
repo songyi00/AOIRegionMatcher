@@ -1,4 +1,4 @@
-package com.sia.codingtest
+package com.sia.codingtest.config
 
 import com.sia.codingtest.domain.Point
 import com.sia.codingtest.dto.request.CreateAoiDto

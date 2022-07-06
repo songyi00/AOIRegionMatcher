@@ -1,6 +1,6 @@
 package com.sia.codingtest.service
 
-import com.sia.codingtest.DataConfig
+import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.domain.Aoi
 import com.sia.codingtest.domain.Point
 import com.sia.codingtest.domain.Region
@@ -49,7 +49,7 @@ class AoiServiceTest(): FunSpec({
         aoiName shouldBe "북한산"
     }
 
-    test("행정 지역 포함 관심지역 조회") {
+    test("행정 지역 포함 관심 지역 존재") {
         //given
         val createRegionDto = DataConfig.createRegionDto()
         val createAoiDto = DataConfig.createAoiDto()
@@ -73,6 +73,27 @@ class AoiServiceTest(): FunSpec({
             aois[0].id shouldBe 1L
             aois[0].name shouldBe "북한산"
         }
+    }
+
+    test("행정 지역 포함 관심 지역 없음") {
+        //given
+        val createRegionDto = DataConfig.createRegionDto()
+        val createAoiDto = DataConfig.createAoiDto()
+
+        val regionResult = Region("서울시",Point.convertListToPolygon(createRegionDto.area))
+        val aoiResult = Aoi("북한산",Point.convertListToPolygon(createAoiDto.area))
+
+        val aoiListResultList = listOf(aoiResult)
+
+        every { regionRepository.save(any()) } returns regionResult
+        every { aoiRepository.save(any()) } returns aoiResult
+        every { aoiRepository.findAOISByRegion(regionResult.id) } returns listOf()
+
+        //when
+        val aois : List<Aoi>? = aoiService.findAoiInRegion(1)
+
+        //then
+        aois shouldBe emptyList()
     }
 
 })

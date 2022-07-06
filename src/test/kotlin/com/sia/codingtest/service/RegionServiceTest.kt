@@ -1,14 +1,9 @@
 package com.sia.codingtest.service
 
-import com.sia.codingtest.DataConfig
-import com.sia.codingtest.domain.Aoi
+import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.domain.Point
 import com.sia.codingtest.domain.Region
-import com.sia.codingtest.dto.request.CreateRegionDto
-import com.sia.codingtest.repository.AoiRepository
 import com.sia.codingtest.repository.RegionRepository
-import com.vividsolutions.jts.geom.Polygon
-import com.vividsolutions.jts.io.WKTReader
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

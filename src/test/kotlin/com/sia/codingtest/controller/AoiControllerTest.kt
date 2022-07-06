@@ -1,10 +1,9 @@
 package com.sia.codingtest.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.sia.codingtest.DataConfig
+import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.service.AoiService
 import com.sia.codingtest.service.RegionService
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -28,6 +27,7 @@ class AoiControllerTest() {
     @Autowired
     private lateinit var regionService: RegionService
 
+    // [POST] 관심 지역 저장 API
     @Test
     fun saveAoiApi() {
         val createAoiDto = DataConfig.createAoiDto()
@@ -46,6 +46,7 @@ class AoiControllerTest() {
             .andDo(MockMvcResultHandlers.print())
     }
 
+    // [GET] 행정 지역 포함 관심 지역 조회 API
     @Test
     fun findAoiInRegionApi() {
         val createAoiDto = DataConfig.createAoiDto()
