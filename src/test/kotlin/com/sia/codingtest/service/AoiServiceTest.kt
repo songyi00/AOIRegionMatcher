@@ -4,16 +4,10 @@ import com.sia.codingtest.DataConfig
 import com.sia.codingtest.domain.Aoi
 import com.sia.codingtest.domain.Point
 import com.sia.codingtest.domain.Region
-import com.sia.codingtest.dto.request.CreateAoiDto
-import com.sia.codingtest.dto.request.CreateRegionDto
 import com.sia.codingtest.repository.AoiRepository
 import com.sia.codingtest.repository.RegionRepository
-import com.vividsolutions.jts.geom.Coordinate
-import com.vividsolutions.jts.geom.Polygon
-import com.vividsolutions.jts.io.WKTReader
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.InternalPlatformDsl.toArray
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -51,7 +45,7 @@ class AoiServiceTest(): FunSpec({
         val aoiName = aoi?.name
 
         //then
-        aoiId shouldBe 0L
+        aoiId shouldBe 1L
         aoiName shouldBe "북한산"
     }
 
@@ -76,7 +70,7 @@ class AoiServiceTest(): FunSpec({
 
         // then
         if (aois != null) {
-            aois[0].id shouldBe 0L
+            aois[0].id shouldBe 1L
             aois[0].name shouldBe "북한산"
         }
     }

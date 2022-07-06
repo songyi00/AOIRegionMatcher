@@ -43,7 +43,7 @@ class RegionServiceTest() : FunSpec({
           val regionName = region?.name
 
           //then
-          regionId shouldBe 0L
+          regionId shouldBe 1L
           regionName shouldBe "서울시"
      }
 

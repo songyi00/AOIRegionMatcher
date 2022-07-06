@@ -13,7 +13,7 @@ class Aoi(name: String, area: Polygon){
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aoi_id", nullable = false)
-    val id: Long = 0
+    val id: Long = 1
 
     @Column(columnDefinition="text")
     var name: String = name
