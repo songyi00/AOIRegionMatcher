@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.Polygon
 import com.vividsolutions.jts.io.WKTReader
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.InternalPlatformDsl.toArray
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
