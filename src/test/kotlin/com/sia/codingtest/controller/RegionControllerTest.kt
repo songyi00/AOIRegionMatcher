@@ -1,49 +1,48 @@
 package com.sia.codingtest.controller
 
-import com.sia.codingtest.domain.Point
-import com.sia.codingtest.dto.request.CreateRegionDto
-import com.sia.codingtest.repository.RegionRepository
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.sia.codingtest.DataConfig
 import com.sia.codingtest.service.RegionService
-import com.vividsolutions.jts.geom.Polygon
-import com.vividsolutions.jts.io.WKTReader
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import io.mockk.every
-import io.mockk.mockk
+
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
-import javax.swing.plaf.synth.Region
+import org.springframework.http.MediaType
+import org.springframework.test.context.TestConstructor
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
+
+@AutoConfigureMockMvc
 @SpringBootTest
-class RegionControllerTest : FunSpec({
+class RegionControllerTest(){
 
-    lateinit var regionRepository : RegionRepository
-    lateinit var regionService : RegionService
-    lateinit var regionController : RegionController
+    @Autowired
+    private lateinit var mvc : MockMvc
 
-    beforeTest {
-        regionRepository = mockk()
-        regionService = RegionService(regionRepository)
-        regionController = RegionController(regionService)
-    }
+    @Autowired
+    private lateinit var regionService : RegionService
 
-    test("행정 지역 저장") {
-        //given
-        val regionArea : Polygon = WKTReader().read("Polygon((126.835 37.688, 127.155 37.702, 127.184 37.474, 126.821 37.454, 126.835 37.688))") as Polygon
-        val points = Point.convertPolygonToList(regionArea)
-        val createRegionDto = CreateRegionDto(
-            "서울시", points
+    @Test
+    fun saveRegionAPi() {
+        val createRegionDto = DataConfig.createRegionDto()
+        val json = jacksonObjectMapper().writeValueAsString(createRegionDto)
+//        println("확인!!!"+ json)
+
+        val uri = "/regions"
+
+        mvc.perform(
+            MockMvcRequestBuilders.post(uri)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
         )
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+            .andDo(MockMvcResultHandlers.print())
 
-        val regionResult = com.sia.codingtest.domain.Region("서울시", regionArea)
-        every { regionRepository.save(any()) } returns regionResult
-        every { regionRepository.findRegionById(any()) } returns regionResult
-
-        //when
-        val response = regionController.saveRegion(createRegionDto)
-
-        //then
-        response.body shouldBe 0L
     }
-
-
-})
+}
