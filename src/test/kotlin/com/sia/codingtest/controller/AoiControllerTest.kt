@@ -63,6 +63,7 @@ class AoiControllerTest() {
                 .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(MockMvcResultMatchers.jsonPath("$.aois").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.aois[0].id").value(1))
             .andDo(MockMvcResultHandlers.print())
     }
 }
