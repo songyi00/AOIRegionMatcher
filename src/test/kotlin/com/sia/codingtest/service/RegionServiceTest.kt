@@ -1,5 +1,6 @@
 package com.sia.codingtest.service
 
+import com.sia.codingtest.DataConfig
 import com.sia.codingtest.domain.Aoi
 import com.sia.codingtest.domain.Point
 import com.sia.codingtest.domain.Region
@@ -30,15 +31,11 @@ class RegionServiceTest() : FunSpec({
 
      test("행정 지역 정보 저장") {
           //given
-          val regionArea : Polygon = WKTReader().read("Polygon((126.835 37.688, 127.155 37.702, 127.184 37.474, 126.821 37.454, 126.835 37.688))") as Polygon
-          val points = Point.convertPolygonToList(regionArea)
-          val createRegionDto = CreateRegionDto(
-               "서울시", points
-          )
+          val createRegionDto = DataConfig.createRegionDto()
+          val regionResult = Region("서울시",Point.convertListToPolygon(createRegionDto.area))
 
-          val regionResult = Region("서울시",regionArea)
-          every { regionRepository.save(any()) } returns regionResult
-          every { regionRepository.findRegionById(any()) } returns regionResult
+          every { regionRepository.save(any())} returns regionResult
+          every { regionRepository.findRegionById(any())} returns regionResult
 
           //when
           val regionId = regionService.saveRegion(createRegionDto)
