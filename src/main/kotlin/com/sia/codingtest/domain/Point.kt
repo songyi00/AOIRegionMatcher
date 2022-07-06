@@ -9,7 +9,7 @@ class Point(val x:Double,val y:Double) {
 
     companion object {
 
-        // list -> polygon
+        // list(point) -> polygon
         fun convertListToPolygon(points: List<Point>): Polygon {
             val geometryFactory: GeometryFactory = GeometryFactory()
             val coordinates: MutableList<Coordinate> = mutableListOf()
@@ -20,7 +20,7 @@ class Point(val x:Double,val y:Double) {
             return geometryFactory.createPolygon(coordinates.toTypedArray())
         }
 
-        // polygon -> list
+        // polygon -> list(point)
         fun convertPolygonToList(area: Polygon) : List<Point> {
             val points : MutableList<Point> = mutableListOf()
             val coordinates = area.coordinates

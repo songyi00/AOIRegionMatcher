@@ -2,12 +2,11 @@ package com.sia.codingtest.controller
 
 import com.sia.codingtest.domain.Aoi
 import com.sia.codingtest.domain.Point
-import com.sia.codingtest.dto.response.AoiResponseDto
+import com.sia.codingtest.dto.response.AoiResponse
 import com.sia.codingtest.dto.response.AoisDto
 import com.sia.codingtest.dto.request.CreateAoiDto
 
 import com.sia.codingtest.service.AoiService
-import com.vividsolutions.jts.geom.Polygon
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -32,29 +31,17 @@ class AoiController(private val aoiService: AoiService) {
     // 행정 지역에 포함되는 관심 지역 조회
     @GetMapping("/regions/{regionId}/aois/intersects")
     @ResponseStatus(HttpStatus.OK)
-    fun findAoisInRegion(@PathVariable regionId: Long) : AoiResponseDto<List<AoisDto>> {
+    fun findAoisInRegion(@PathVariable regionId: Long) : AoiResponse<List<AoisDto>> {
         val aois : List<Aoi>? = aoiService.findAoiInRegion(regionId)
         val aoisDto : ArrayList<AoisDto> = ArrayList()
 
-        if (aois != null) {
+        return if (aois != null) {
             aois.forEach{ aoi ->
-                aoisDto.add(AoisDto(aoi.id,aoi.name,polygonToPoint(aoi.area)))
+                aoisDto.add(AoisDto(aoi.id,aoi.name,Point.convertPolygonToList(aoi.area)))
             }
-            return AoiResponseDto(aoisDto)
-        }
-        else{
-            return AoiResponseDto(null)
-        }
-    }
-
-    companion object{
-        fun polygonToPoint(area : Polygon) : List<Point> {
-            val points : ArrayList<Point> = ArrayList()
-            val coordinates = area.coordinates
-            for (c in coordinates){
-                points.add(Point(c.x,c.y))
-            }
-            return points
+            AoiResponse(aoisDto)
+        } else {
+            AoiResponse(listOf())
         }
     }
 }

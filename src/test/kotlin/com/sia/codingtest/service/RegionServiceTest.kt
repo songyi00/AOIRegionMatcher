@@ -1,32 +1,44 @@
 package com.sia.codingtest.service
 
+import com.sia.codingtest.domain.Aoi
 import com.sia.codingtest.domain.Point
 import com.sia.codingtest.domain.Region
 import com.sia.codingtest.dto.request.CreateRegionDto
+import com.sia.codingtest.repository.AoiRepository
+import com.sia.codingtest.repository.RegionRepository
 import com.vividsolutions.jts.geom.Polygon
 import com.vividsolutions.jts.io.WKTReader
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class RegionServiceTest(val regionService: RegionService) : FunSpec({
+@ExtendWith(MockKExtension::class)
+class RegionServiceTest() : FunSpec({
+
+     lateinit var regionRepository : RegionRepository
+     lateinit var regionService : RegionService
+
+     beforeTest {
+          regionRepository = mockk()
+          regionService = RegionService(regionRepository)
+     }
 
      test("행정 지역 정보 저장") {
           //given
           val regionArea : Polygon = WKTReader().read("Polygon((126.835 37.688, 127.155 37.702, 127.184 37.474, 126.821 37.454, 126.835 37.688))") as Polygon
-          val points : MutableList<Point> = mutableListOf()
-          val coordinates = regionArea.coordinates
-          for (c in coordinates){
-               points.add(Point(c.x,c.y))
-          }
-
+          val points = Point.convertPolygonToList(regionArea)
           val createRegionDto = CreateRegionDto(
                "서울시", points
           )
 
-          println(createRegionDto.area)
-          println("geometry: "+ regionArea.geometryType)
+          val regionResult = Region("서울시",regionArea)
+          every { regionRepository.save(any()) } returns regionResult
+          every { regionRepository.findRegionById(any()) } returns regionResult
 
           //when
           val regionId = regionService.saveRegion(createRegionDto)
@@ -34,6 +46,7 @@ class RegionServiceTest(val regionService: RegionService) : FunSpec({
           val regionName = region?.name
 
           //then
+          regionId shouldBe 0L
           regionName shouldBe "서울시"
      }
 
