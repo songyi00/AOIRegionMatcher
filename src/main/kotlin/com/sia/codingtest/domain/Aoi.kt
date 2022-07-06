@@ -19,7 +19,7 @@ class Aoi(name: String, area: Polygon){
     var name: String = name
 
 
-    @Column(columnDefinition = "geometry(Polygon)")
+    @Column(columnDefinition = "geometry(Polygon,4326)")
     var area: Polygon = area
 
     companion object{
