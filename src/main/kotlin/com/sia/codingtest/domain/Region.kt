@@ -1,7 +1,8 @@
 package com.sia.codingtest.domain
 
-import com.sia.codingtest.dto.CreateRegionDto
-import com.vividsolutions.jts.geom.Point
+import com.sia.codingtest.dto.request.CreateRegionDto
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.GeometryFactory
 import com.vividsolutions.jts.geom.Polygon
 import javax.persistence.*
 
@@ -19,6 +20,7 @@ class Region(name:String, area:Polygon) {
     @Column(columnDefinition = "geometry(Polygon)")
     var area: Polygon = area
 
+
     companion object{
         private val equalsAndHashCodeProperties = arrayOf(Region::id)
         private val toStringProperties = arrayOf(
@@ -26,8 +28,11 @@ class Region(name:String, area:Polygon) {
             Region::name,
             Region::area
         )
-        fun createRegionInfo(createRegionDto: CreateRegionDto) : Region {
-            return Region(createRegionDto.name, createRegionDto.area)
+
+        fun createRegion(createRegionDto: CreateRegionDto) : Region {
+            val area : Polygon = Point.convertListToPolygon(createRegionDto.area)
+            return Region(createRegionDto.name, area)
         }
+
     }
 }

@@ -39,7 +39,6 @@ val kotestVersion = "5.2.3"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -51,8 +50,6 @@ dependencies {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 		exclude(module = "mockito-core")
 	}
-	testImplementation("org.springframework.security:spring-security-test")
-
 
 	// kassava
 	implementation("com.github.consoleau:kassava:2.1.0")

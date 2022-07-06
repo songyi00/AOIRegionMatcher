@@ -1,7 +1,7 @@
 package com.sia.codingtest.service
 
 import com.sia.codingtest.domain.Region
-import com.sia.codingtest.dto.CreateRegionDto
+import com.sia.codingtest.dto.request.CreateRegionDto
 import com.sia.codingtest.repository.RegionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +13,7 @@ class RegionService(private val regionRepository: RegionRepository) {
     // 행정지역 정보 저장
     @Transactional
     fun saveRegion(createRegionDto : CreateRegionDto) : Long {
-        val region : Region = Region.createRegionInfo(createRegionDto)
+        val region : Region = Region.createRegion(createRegionDto)
         regionRepository.save(region)
         return region.id
     }
