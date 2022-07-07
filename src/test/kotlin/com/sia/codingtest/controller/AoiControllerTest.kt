@@ -4,6 +4,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.service.AoiService
 import com.sia.codingtest.service.RegionService
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -13,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -65,6 +69,29 @@ class AoiControllerTest() {
         )
             .andExpect(MockMvcResultMatchers.jsonPath("$.aois").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.aois[0].id").value(1))
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    // [GET] 가장 가까운 관심 지역 조회
+    @Test
+    fun findClosestAoiApi() {
+        val createAoiDto = DataConfig.createAoiDto()
+        val createRegionDto = DataConfig.createRegionDto()
+
+        aoiService.saveAoi(createAoiDto)
+        regionService.saveRegion(createRegionDto)
+
+        val json = jacksonObjectMapper().writeValueAsString(createAoiDto)
+
+        val uri = "/aois?lat=37.541&long=126.986"
+
+        mvc.perform(
+            MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.jsonPath("$.aois").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.aois[0].id").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.aois[0].name").value("북한산"))
             .andDo(MockMvcResultHandlers.print())
     }
 }

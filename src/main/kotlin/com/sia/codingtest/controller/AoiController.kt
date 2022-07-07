@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -41,6 +42,18 @@ class AoiController(private val aoiService: AoiService) {
                 aoisDto.add(AoisDto(aoi.id,aoi.name,Point.convertPolygonToList(aoi.area)))
             }
             AoiResponse(aoisDto)
+        } else {
+            AoiResponse(listOf())
+        }
+    }
+
+    // 가장 가까운 관심 지역 조회
+    @GetMapping("/aois")
+    @ResponseStatus(HttpStatus.OK)
+    fun findClosestAoi(@RequestParam(value = "lat") lat: Double, @RequestParam(value = "long") long : Double ): AoiResponse<List<AoisDto>> {
+        val aoi = aoiService.findClosestAoi(lat, long)
+        return if (aoi != null) {
+            AoiResponse(listOf(AoisDto(aoi.id,aoi.name,Point.convertPolygonToList(aoi.area))))
         } else {
             AoiResponse(listOf())
         }
