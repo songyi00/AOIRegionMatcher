@@ -94,7 +94,7 @@ class AoiServiceTest(): FunSpec({
         aois shouldBe emptyList()
     }
 
-    test("가장 가까운 관심 지역 조회") {
+    test("가장 가까운 관심 지역 존재") {
         //given
         val lat = 37.541
         val long = 126.986
@@ -118,5 +118,26 @@ class AoiServiceTest(): FunSpec({
         else {
             aoi shouldBe null
         }
+    }
+
+    test("가장 가까운 관심 지역 없음") {
+        //given
+        val lat = 37.541
+        val long = 126.986
+
+        val createRegionDto = DataConfig.createRegionDto()
+        val createAoiDto = DataConfig.createAoiDto()
+
+        val regionResult = Region("서울시",Point.convertListToPolygon(createRegionDto.area))
+        val aoiResult = Aoi("북한산",Point.convertListToPolygon(createAoiDto.area))
+
+        every { aoiRepository.findClosestAoi(lat,long) } returns null
+
+        //when
+        val aoi = aoiService.findClosestAoi(lat,long)
+
+        // then
+        aoi shouldBe null
+
     }
 })
