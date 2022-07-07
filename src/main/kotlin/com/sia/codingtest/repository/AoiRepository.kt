@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface AoiRepository : JpaRepository<Aoi,Long> {
-    fun findAOIById(id: Long): Aoi?
+    fun findAoiById(id: Long): Aoi?
 
     @Query(value = "select a.* from AOI a , Region r where r.region_id = :regionId and st_intersects(a.area , r.area)",nativeQuery=true)
-    fun findAOISByRegion(@Param("regionId") regionId: Long): List<Aoi>?
+    fun findAoisByRegion(@Param("regionId") regionId: Long): List<Aoi>?
 
+    @Query(value =  "select * from aoi order by ST_Distance(area,ST_SetSRID(ST_Point(:lat, :long), 4326)) limit 1", nativeQuery = true)
+    fun findClosestAoi(@Param("lat") lat:Double, @Param("long") long:Double) : Aoi?
  }

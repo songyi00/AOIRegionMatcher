@@ -21,12 +21,17 @@ class AoiService(private val aoiRepository: AoiRepository, private val regionRep
 
     // 관심 지역 조회 by id
     fun findOne(aoiId : Long) : Aoi?{
-        return aoiRepository.findAOIById(aoiId)
+        return aoiRepository.findAoiById(aoiId)
     }
 
     // 행정지역에 지리적으로 포함되는 관심 지역 조회
     fun findAoiInRegion(regionId : Long) : List<Aoi>? {
-            return aoiRepository.findAOISByRegion(regionId)
+            return aoiRepository.findAoisByRegion(regionId)
+    }
+
+    // 가장 가까운 관심 지역 조회
+    fun findClosestAoi(lat:Double, long:Double) : Aoi?{
+        return aoiRepository.findClosestAoi(lat,long)
     }
 
 }
