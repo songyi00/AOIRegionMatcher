@@ -37,7 +37,7 @@ class AoiServiceTest(): FunSpec({
         val aoiResult = Aoi("북한산",Point.convertListToPolygon(createAoiDto.area))
 
         every { aoiRepository.save(any()) } returns aoiResult
-        every { aoiRepository.findAOIById(any()) } returns aoiResult
+        every { aoiRepository.findAoiById(any()) } returns aoiResult
 
         //when
         val aoiId = aoiService.saveAoi(createAoiDto)
@@ -61,7 +61,7 @@ class AoiServiceTest(): FunSpec({
 
         every { regionRepository.save(any()) } returns regionResult
         every { aoiRepository.save(any()) } returns aoiResult
-        every { aoiRepository.findAOISByRegion(regionResult.id) } returns aoiListResultList
+        every { aoiRepository.findAoisByRegion(regionResult.id) } returns aoiListResultList
 
         // when
         val regionId = regionService.saveRegion(createRegionDto)
@@ -83,11 +83,9 @@ class AoiServiceTest(): FunSpec({
         val regionResult = Region("서울시",Point.convertListToPolygon(createRegionDto.area))
         val aoiResult = Aoi("북한산",Point.convertListToPolygon(createAoiDto.area))
 
-        val aoiListResultList = listOf(aoiResult)
-
         every { regionRepository.save(any()) } returns regionResult
         every { aoiRepository.save(any()) } returns aoiResult
-        every { aoiRepository.findAOISByRegion(regionResult.id) } returns listOf()
+        every { aoiRepository.findAoisByRegion(regionResult.id) } returns listOf()
 
         //when
         val aois : List<Aoi>? = aoiService.findAoiInRegion(1)
@@ -96,4 +94,29 @@ class AoiServiceTest(): FunSpec({
         aois shouldBe emptyList()
     }
 
+    test("가장 가까운 관심 지역 조회") {
+        //given
+        val lat = 37.541
+        val long = 126.986
+
+        val createRegionDto = DataConfig.createRegionDto()
+        val createAoiDto = DataConfig.createAoiDto()
+
+        val regionResult = Region("서울시",Point.convertListToPolygon(createRegionDto.area))
+        val aoiResult = Aoi("북한산",Point.convertListToPolygon(createAoiDto.area))
+
+        every { aoiRepository.findClosestAoi(lat,long) } returns aoiResult
+
+        //when
+        val aoi = aoiService.findClosestAoi(lat,long)
+
+        // then
+        if (aoi != null) {
+            val name = aoi.name
+            name shouldBe "북한산"
+        }
+        else {
+            aoi shouldBe null
+        }
+    }
 })
