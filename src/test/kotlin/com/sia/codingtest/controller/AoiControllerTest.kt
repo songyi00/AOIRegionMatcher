@@ -4,8 +4,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.service.AoiService
 import com.sia.codingtest.service.RegionService
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -17,7 +15,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.utility.DockerImageName
 
+@Testcontainers
 @AutoConfigureMockMvc
 @SpringBootTest
 class AoiControllerTest() {
@@ -30,6 +31,12 @@ class AoiControllerTest() {
 
     @Autowired
     private lateinit var regionService: RegionService
+
+
+    @Container
+    val postgresqlContainer = PostgreSQLContainer<Nothing>(
+        DockerImageName.parse("postgis/postgis")
+            .asCompatibleSubstituteFor("postgres"))
 
     // [POST] 관심 지역 저장 API
     @Test

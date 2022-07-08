@@ -1,8 +1,11 @@
 package com.sia.codingtest.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.sia.codingtest.DatabaseContainer
 import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.service.RegionService
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +16,9 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.utility.DockerImageName
 
 
 @AutoConfigureMockMvc
@@ -24,6 +30,11 @@ class RegionControllerTest(){
 
     @Autowired
     private lateinit var regionService : RegionService
+
+    @Container
+    val postgresqlContainer = PostgreSQLContainer<Nothing>(
+        DockerImageName.parse("postgis/postgis")
+            .asCompatibleSubstituteFor("postgres"))
 
     // [POST] 행정 지역 조회 API
     @Test

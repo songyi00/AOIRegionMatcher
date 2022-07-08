@@ -2,11 +2,11 @@ spring:
   profiles:
     default: dev
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/sia?useUnicode=true&characterEncoding=utf8
-    username: ksl2950
-    password: rlathddl
-    driver-class-name: org.postgresql.Driver
+  # datasource:
+  #   url: jdbc:postgresql://postgresql:5432/sia?useUnicode=true&characterEncoding=utf8
+  #   username: ksl2950
+  #   password: rlathddl
+  #   driver-class-name: org.postgresql.Driver
 
   sql:
     init:

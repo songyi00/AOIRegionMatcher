@@ -17,7 +17,9 @@ class Point(val x:Double,val y:Double) {
             points.forEach { point ->
                 coordinates.add(Coordinate(point.x, point.y))
             }
-            return geometryFactory.createPolygon(coordinates.toTypedArray())
+            val pg = geometryFactory.createPolygon(coordinates.toTypedArray())
+            pg.srid = 4326
+            return pg
         }
 
         // polygon -> list(point)

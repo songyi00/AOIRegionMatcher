@@ -1,5 +1,6 @@
 package com.sia.codingtest.service
 
+import com.sia.codingtest.DatabaseContainer
 import com.sia.codingtest.config.DataConfig
 import com.sia.codingtest.domain.Aoi
 import com.sia.codingtest.domain.Point
@@ -11,6 +12,8 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -23,6 +26,16 @@ class AoiServiceTest(): FunSpec({
 
     lateinit var regionService : RegionService
     lateinit var aoiService : AoiService
+
+    @BeforeAll
+    fun beforeAll() {
+        DatabaseContainer.postgresqlContainer.start()
+    }
+
+    @AfterAll
+    fun afterAll() {
+        DatabaseContainer.postgresqlContainer.stop()
+    }
 
     beforeTest {
         aoiRepository = mockk()

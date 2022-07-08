@@ -3,10 +3,16 @@ spring:
     default: dev
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/sia?useUnicode=true&characterEncoding=utf8
+    url: jdbc:tc:postgis:///test-database
     username: ksl2950
     password: rlathddl
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+#  datasource:
+#    url: jdbc:postgresql://postgresql:5432/sia?useUnicode=true&characterEncoding=utf8
+#    username: ksl2950
+#    password: rlathddl
+#    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:

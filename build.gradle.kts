@@ -71,6 +71,11 @@ dependencies {
 	// mockK
 	testImplementation("io.mockk:mockk:1.12.4")
 
+	// test container
+	testImplementation ("org.testcontainers:testcontainers:1.16.2")
+	testImplementation("org.testcontainers:junit-jupiter:1.16.2")
+	testImplementation("org.testcontainers:postgresql:1.16.2")
+
 }
 
 tasks.withType<KotlinCompile> {
